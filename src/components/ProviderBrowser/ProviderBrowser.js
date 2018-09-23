@@ -1,5 +1,5 @@
 // IMPORT PACKAGE REFERENCES
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -8,9 +8,15 @@ import { bindActionCreators } from 'redux';
 
 import { fetchProviders } from '../state/actions/ProvidersActions';
 import { ProviderList } from './ProviderList';
+import {MapProviders} from './map/map';
 import { LoadingIndicator } from '../shared/LoadingIndicator/LoadingIndicator';
 import { Error } from '../shared/Error/Error';
 
+
+const mapStyle = {
+    height: '180px',
+    with:'180px'
+};
 
 // COMPONENT
 
@@ -28,7 +34,8 @@ class ProviderBrowser extends Component {
         return (
             <div>
                 {
-                    this.props.fetched && <ProviderList providers={this.props.providers} />
+                    this.props.fetched && <Fragment>  <MapProviders  providers={this.props.providers} style={mapStyle}  /> <ProviderList providers={this.props.providers} /></Fragment> 
+                   
                 }
                 {
                     <LoadingIndicator busy={this.props.fetching} />
