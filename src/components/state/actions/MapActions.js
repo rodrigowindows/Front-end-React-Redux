@@ -12,10 +12,9 @@ export const MAP_FETCHED = 'MAP_FETCHED';
 
 
 
-export function MapFulfilled(map) {
+export function MapFulfilled() {
     return {
-        type: 'MAP_FULFILLED',
-        payload : map
+        type: 'MAP_FULFILLED'
     };
 }
 

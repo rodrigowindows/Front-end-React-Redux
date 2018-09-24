@@ -22,18 +22,13 @@ class MapProviders extends Component {
 
 
     componentDidMount() {
-        let { dispatch } = this.props;
+        // let { dispatch } = this.props;
         //Loading Map
-        let action = MapFetching();
-        dispatch(action);
+        // let action = MapFetching();
+        // dispatch(action);
 
-        var map = L.map('map', {
-            minZoom: 2,
-            maxZoom: 20,
-            layers: [L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'})],
-            attributionControl: false,
-        });
-        map.setView([38.875532, -77.047822], 10);
+        
+        this.props.map.setView([38.875532, -77.047822], 10);
 
         delete L.Icon.Default.prototype._getIconUrl;
         L.Icon.Default.mergeOptions({
@@ -42,30 +37,31 @@ class MapProviders extends Component {
             shadowUrl: require('leaflet/dist/images/marker-shadow.png')
         });
 
-        let layerGroup = [];
-        (this.props.providers).forEach(function(element) {
-            layerGroup.push(L.marker([element.lat, element.lon]));
-        });
-        L.layerGroup(layerGroup).addTo(map);
+        
+        this.props.map.eachLayer(function (layer) {
+            if(!layer._url)
+                this.props.map.removeLayer(layer);
+        }, this);
+
+
+        L.layerGroup(this.props.layerGroup).addTo(this.props.map);
+
         L.polygon([
             [38.801165,-77.036123],
             [38.897422,-76.918020],
             [38.995682,-77.036123],
             [38.899559,-77.165213],
             [38.801165,-77.036123]
-        ]).addTo(map);
+        ]).addTo(this.props.map);
 
-        action = MapFulfilled({'map':document.getElementById('map')});
-        dispatch(action);
+        // action = MapFulfilled({'map':document.getElementById('map')});
+        // dispatch(action);
     }
 
 
     render() {
         return (
             <div>
-                {
-                    <div id="map" style={{ height: 300 }}></div>
-                }
                 {
                     
                     <LoadingIndicator busy={this.props.fetching} />
@@ -76,20 +72,20 @@ class MapProviders extends Component {
 }
 
 MapProviders.propTypes = {
-    providers: PropTypes.array.isRequired,
     map: PropTypes.object,
     fetched: PropTypes.bool.isRequired,
     fetching: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func
+    dispatch: PropTypes.func,
+    layerGroup: PropTypes.array
 };
 
 // CONFIGURE REACT REDUX
 
 const mapStateToProps = state => {
-    const {fetched, fetching, map } = state.map;
+    const {fetched, fetching } = state.map;
 
     console.log('new state',state);
-    return {fetched, fetching, map };
+    return {fetched, fetching };
 };
 
 

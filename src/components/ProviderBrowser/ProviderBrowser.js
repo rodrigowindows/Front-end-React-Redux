@@ -3,10 +3,11 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import L from 'leaflet';
 
 // IMPORT PROJECT REFERENCES
 
-import { fetchProviders } from '../state/actions/ProvidersActions';
+import { fetchProviders,willUnmont } from '../state/actions/ProvidersActions';
 import { ProviderList } from './ProviderList';
 import {MapProviders} from './map/map';
 import { LoadingIndicator } from '../shared/LoadingIndicator/LoadingIndicator';
@@ -23,8 +24,32 @@ const mapStyle = {
 
 // COMPONENT
 
-class ProviderBrowser extends Component {
+function pushMarkers(providers) {
 
+    let layerArray = new Array();
+    (providers).forEach(function(element) {
+        layerArray.push(L.marker([element.lat, element.lon],{title:element.id}).bindPopup('<b>Provider</b><br>'+ element.name));
+    });
+    return layerArray;
+}
+
+function mapRender() {
+    let map = L.map('map', {
+        minZoom: 2,
+        maxZoom: 20,
+        layers: [L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'})],
+        attributionControl: false,
+    });
+
+
+
+    return map;
+}
+
+class ProviderBrowser extends Component {
+    state = {
+        map:null,
+    };
     constructor(props) {
         super(props);
         let socket = new socketio();
@@ -35,18 +60,34 @@ class ProviderBrowser extends Component {
     }
 
     componentDidMount() {
+        this.setState({map:mapRender()});
         this.props.fetchProviders();
+        
+    }
+    componentWillUnmount(){
+
+        this.props.willUnmont();
     }
 
+
+    
     render() {
+        let { map } = this.state;
+        if(this.props.fetched){
+            this.layerGroup=pushMarkers(this.props.providers,map);
+        }
+
         return (
             <div>
                 {
-                    this.props.fetched && <Fragment>  <MapProviders  providers={this.props.providers} style={mapStyle}  /> <ProviderList providers={this.props.providers} /></Fragment> 
+                    <div id="map"  style={this.props.fetched ? { height: 300, display:'block' } : { height: 300, display:'none' }}></div>  
+                }
+                {
+                    this.props.fetched && <Fragment >   <MapProviders  providers={this.props.providers}  map={map} layerGroup={this.layerGroup} style={mapStyle}  /> <ProviderList providers={this.props.providers} layerGroup={this.layerGroup} /></Fragment> 
                    
                 }
                 {
-                    <LoadingIndicator busy={this.props.fetching} />
+                    <LoadingIndicator busy={this.props.fetching}  />
                 }
                 {
                     this.props.failed && <Error message="Failed to fetch list of providers" />
@@ -58,10 +99,12 @@ class ProviderBrowser extends Component {
 
 ProviderBrowser.propTypes = {
     fetchProviders: PropTypes.func.isRequired,
+    willUnmont: PropTypes.func.isRequired,
     fetched: PropTypes.bool.isRequired,
     fetching: PropTypes.bool.isRequired,
     failed: PropTypes.bool,
-    providers: PropTypes.array.isRequired
+    providers: PropTypes.array.isRequired,
+
 };
 
 
@@ -74,7 +117,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => (
-    bindActionCreators({ fetchProviders }, dispatch)
+    bindActionCreators({ fetchProviders,willUnmont }, dispatch)
 );
 
 const hoc = connect(mapStateToProps, mapDispatchToProps)(ProviderBrowser);

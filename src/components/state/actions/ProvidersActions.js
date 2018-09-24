@@ -15,7 +15,12 @@ const fetchProvidersAction = () => ({
     payload: fetchProviders()
 });
 
+const willUnmont = () => ({
+    type: FETCH_PROVIDERS_REJECTED
+});
+
 
 // EXPORT ACTIONS
 
 export { fetchProvidersAction as fetchProviders };
+export { willUnmont };

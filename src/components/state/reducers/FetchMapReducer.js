@@ -8,7 +8,6 @@ import {
 // INITIALIZE STATE
 
 const initialState = {
-    map:null,
     fetched: false,
     fetching: false
 };
@@ -32,7 +31,6 @@ export const FetchMapReducer = (state = initialState, action) => {
         case MAP_FULFILLED:
             return {
                 ...state,
-                map: action.payload,
                 fetched: true,
                 fetching: false
             };
