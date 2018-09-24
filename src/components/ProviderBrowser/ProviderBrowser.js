@@ -12,6 +12,9 @@ import {MapProviders} from './map/map';
 import { LoadingIndicator } from '../shared/LoadingIndicator/LoadingIndicator';
 import { Error } from '../shared/Error/Error';
 
+//socketIO service
+import {socketio} from '../../services/socketIO';
+
 
 const mapStyle = {
     height: '180px',
@@ -24,6 +27,11 @@ class ProviderBrowser extends Component {
 
     constructor(props) {
         super(props);
+        let socket = new socketio();
+        socket.listen('providers').subscribe(res => {
+            console.log('New provider from Socket IO',res);
+            this.props.fetchProviders();
+        });
     }
 
     componentDidMount() {

@@ -1,6 +1,7 @@
 import {
-    MAP_EMPTY,
-    MAP_FULFILLED
+    MAP_FETCHING,
+    MAP_FULFILLED,
+    MAP_FETCHED
 } from '../actions/MapActions';
 
 
@@ -9,28 +10,31 @@ import {
 const initialState = {
     map:null,
     fetched: false,
-    failed: false
+    fetching: false
 };
 
 
 // REDUCER
 
 export const FetchMapReducer = (state = initialState, action) => {
-    console.log('new action',action,'new state',state);
+    console.log('new action',action);
     switch(action.type) {
-        case MAP_EMPTY:
+        case MAP_FETCHING:
             return {
                 ...state,
-                map: null,
-                fetched: false,
-                failed: false
+                fetching: true
+            };
+        case MAP_FETCHED:
+            return {
+                ...state,
+                fetching: false
             };
         case MAP_FULFILLED:
             return {
                 ...state,
                 map: action.payload,
                 fetched: true,
-                failed: false
+                fetching: false
             };
         default:
             return state;

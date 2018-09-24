@@ -1,8 +1,10 @@
 
 // FETCH ACTION NAMES
 
-export const MAP_EMPTY = 'MAP_EMPTY';
+
 export const MAP_FULFILLED = 'MAP_FULFILLED';
+export const MAP_FETCHING = 'MAP_FETCHING';
+export const MAP_FETCHED = 'MAP_FETCHED';
 
 
 
@@ -17,10 +19,15 @@ export function MapFulfilled(map) {
     };
 }
 
-export function MapEmpty() {
+export function MapFetching() {
     return {
-        type: 'MAP_EMPTY',
-        payload : null
+        type: 'MAP_FETCHING'
+    };
+}
+
+export function MapFetched() {
+    return {
+        type: 'MAP_FETCHED'
     };
 }
 
