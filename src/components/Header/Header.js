@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 export const Header = () => (
     <nav className="navbar navbar-expand-lg navbar-light alert-dark">
         <a className="navbar-brand" href="/">
-            <i className="fab fa-react fa-2x" style={{color: 'dodgerblue'}}></i>
+            <i className="fa fa-user-md fa-2x" style={{color: 'dodgerblue'}}></i>
         </a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
             <span className="navbar-toggler-icon"></span>
@@ -28,7 +28,7 @@ export const Header = () => (
                 </li>
                 <li className="nav-item">
                     <div className="nav-link">
-                        <NavLink to='/about' activeClassName='menu selected'>ABOUT</NavLink>
+                        <NavLink to='/addProvider' activeClassName='menu selected'>ADD PROVIDERS</NavLink>
                     </div>
                 </li>
             </ul>

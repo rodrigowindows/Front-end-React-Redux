@@ -6,7 +6,7 @@ class socketio {
         socket:null,
     };
     constructor() {
-        this.state.socket = io.connect('http://localhost:5000/update');
+        this.state.socket = io.connect('http://18.191.149.21:5000/update');
 
         this.state.socket.emit('join','{"username":"Rodrigo Alves","room":"providers"}');
 
@@ -22,10 +22,10 @@ class socketio {
                 observer.next(data);
             });
     
-            // observable is disposed
-            return () => {
-                this.socket.off(event);
-            };
+            // // observable is disposed
+            // return () => {
+            //     this.socket.off(event);
+            // };
         });
     
     }

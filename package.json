@@ -2,6 +2,7 @@
   "name": "react-redux-starter",
   "version": "1.0.0",
   "description": "",
+  "homepage": "http://www.deliveringsms.com/veda",
   "scripts": {
     "build": "webpack",
     "build:dev": "npm run build -- --env.env=dev",

@@ -48,8 +48,8 @@ const config = {
             //     exclude: /node_modules/
             // },
             { 
-                test: /\.(png|woff|woff2|eot|ttf|svg)$/, 
-                loader: 'url-loader?limit=100000' 
+                test: /\.(png|woff|woff2|eot|ttf|svg|gif)$/, 
+                loader: 'url-loader?name=app/images/[name].[ext]"' 
             }
         ]
     },

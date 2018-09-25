@@ -47,25 +47,31 @@ function mapRender() {
 }
 
 class ProviderBrowser extends Component {
-    state = {
-        map:null,
-    };
     constructor(props) {
         super(props);
-        let socket = new socketio();
-        socket.listen('providers').subscribe(res => {
-            console.log('New provider from Socket IO',res);
-            this.props.fetchProviders();
-        });
+        this.state = {
+            map:null,
+            subscription:null,
+        };
+        
     }
 
     componentDidMount() {
+        let socket = new socketio();
+        let subscription = socket.listen('providers').subscribe(res => {
+            console.log('New provider from Socket IO',res,this.props);
+            if(this.props.fetched){
+                this.props.fetchProviders();
+            }
+                
+        });
+        this.setState({subscription:subscription});
         this.setState({map:mapRender()});
         this.props.fetchProviders();
         
     }
     componentWillUnmount(){
-
+        this.state.subscription.unsubscribe();
         this.props.willUnmont();
     }
 
@@ -112,7 +118,7 @@ ProviderBrowser.propTypes = {
 
 const mapStateToProps = state => {
     const { fetching, fetched, failed, providers } = state.providers;
-
+    console.log('new state',state);
     return { fetching, fetched, failed, providers };
 };
 

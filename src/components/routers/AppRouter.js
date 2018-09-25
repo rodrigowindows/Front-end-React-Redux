@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import { Header } from '../Header/Header';
 import { HomePage } from '../pages/HomePage';
-import { AboutPage } from '../pages/AboutPage';
+import { addProvider } from '../pages/addProvider';
 import { ProvidersPage } from '../pages/ProvidersPage';
 
 //socketIO service
@@ -53,7 +53,7 @@ export class AppRouter extends React.Component {
                     ContentProps={{
                         'aria-describedby': 'message-id',
                     }}
-                    message={<span id="message-id">New Provider Update!</span>}
+                    message={<span id="message-id">New Update!</span>}
                     action={[
                         <IconButton
                             key="close"
@@ -80,7 +80,7 @@ export const Router = () => (
             <Switch>
                 <Route path='/' component={HomePage} exact={true} />
                 <Route path='/providers' component={ProvidersPage} />
-                <Route path='/about' component={AboutPage} />
+                <Route path='/addProvider' component={addProvider} />
                 <Redirect to="/" />
             </Switch>
         </Fragment>

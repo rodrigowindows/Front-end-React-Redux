@@ -15,10 +15,9 @@ import { AppReducer } from '../reducers/AppReducer';
 // CONFIGURE STORE
 
 const allStoreEnhancers = compose (
-    applyMiddleware(thunk, promiseMiddleware()),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    applyMiddleware(thunk, promiseMiddleware())
 );
-
+// ,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 export const createAppStore = () => {
     return createStore(AppReducer,allStoreEnhancers);
 };
